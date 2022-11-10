@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Character;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace DefaultNamespace
+namespace Input
 {
     public class InputReader : MonoBehaviour
     {
@@ -10,6 +11,6 @@ namespace DefaultNamespace
         public void OnMovement(InputAction.CallbackContext context) =>
             _player.MoveDirection = context.ReadValue<Vector2>();
 
-        public void OnAttack(InputAction.CallbackContext context) => _player.Attack();
+        public void OnDash(InputAction.CallbackContext context) => _player.Dash();
     }
 }
