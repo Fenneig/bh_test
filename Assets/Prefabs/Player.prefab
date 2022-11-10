@@ -324,10 +324,10 @@ MonoBehaviour:
   _orientation: {fileID: 8529118167927359560}
   _rigidbody: {fileID: 1789123746}
   _player: {fileID: 8529118166908508200}
-  _dashForce: 20
-  _dashUpwardForce: 2
+  _dashForce: 40
+  _dashUpwardForce: 0.5
   _maxDashSpeed: 20
-  _dashDuration: 0.1
+  _dashDuration: 0.3
   _dashCooldown: 2
 --- !u!1 &8529118167171753008
 GameObject:
