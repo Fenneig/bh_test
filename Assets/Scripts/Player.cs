@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _turnSmoothTime = 0.1f;
 
+    private float _turnSmoothVelocity;
     private Vector2 _moveDirection;
 
     public Vector2 MoveDirection
@@ -16,7 +18,10 @@ public class Player : MonoBehaviour
         set => _moveDirection = value;
     }
 
-    private float _turnSmoothVelocity;
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     void Update()
     {
