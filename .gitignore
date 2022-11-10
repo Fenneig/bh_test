@@ -5,6 +5,7 @@
 /Temp/
 /Assets/VSCode*
 /obj/
+/Logs/
 /.vscode/
 *.sln
 *.userprefs
