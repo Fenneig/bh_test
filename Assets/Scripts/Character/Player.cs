@@ -18,7 +18,6 @@ namespace Character
         [SerializeField] private float _speed;
         [SerializeField] private float _turnSmoothTime = 0.1f;
         [SerializeField] private float _drag = 2f;
-        [SerializeField] private string _playerName;
 
         private float _turnSmoothVelocity;
         private Vector2 _moveDirection;
@@ -41,8 +40,6 @@ namespace Character
             get => _speed;
             set => _speed = value;
         }
-
-        public string PlayerName => _playerName;
 
         public override void OnStartLocalPlayer()
         {

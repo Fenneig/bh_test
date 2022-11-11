@@ -7,7 +7,9 @@ namespace Components
     {
         public void ApplyDamage(GameObject target)
         {
-            Debug.Log($"{gameObject.GetComponentInParent<Player>().PlayerName} hit {target.name}");
+            NameComponent targetNameComponent = target.GetComponent<NameComponent>();
+            if (targetNameComponent != null)
+                Debug.Log($"{gameObject.GetComponentInParent<NameComponent>().PlayerName} hit {targetNameComponent.PlayerName}");
         }
     }
 }
