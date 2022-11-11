@@ -1,16 +1,16 @@
 ﻿using System.Collections;
-using Character;
+using Mirror;
 using UnityEngine;
 
-namespace Movement
+namespace Character.Movement
 {
-    public class DashComponent : MonoBehaviour
+    public class DashComponent : NetworkBehaviour
     {
         [Header("References")] 
         [SerializeField] private Transform _orientation;
-
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private Player _player;
+        [SerializeField] private GameObject _attack;
 
         [Header("Dashing")]
         [SerializeField] private float _dashForce;
@@ -37,7 +37,7 @@ namespace Movement
         public void Dash()
         {
             if (_dashCooldownTimer > 0) return;
-        
+            _attack.SetActive(true);
             _dashCooldownTimer = _dashCooldown;
             _player.Speed = _maxDashSpeed;
             Vector3 direction = _orientation.forward.normalized;
@@ -52,7 +52,8 @@ namespace Movement
             _rigidbody.AddForce(_forceToApply, ForceMode.Impulse);
 
             yield return new WaitForSeconds(_dashDuration);
-
+            
+            _attack.SetActive(false);
             _player.Speed = _speed;
             _rigidbody.useGravity = true;
         }

@@ -1,20 +1,24 @@
-using Movement;
+using Character.Movement;
+using Cinemachine;
+using Mirror;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Character
 {
-    public class Player : MonoBehaviour
+    public class Player : NetworkBehaviour
     {
         [Header("References")]
-        [SerializeField] private Transform _camera;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private CapsuleCollider _collider;
         [SerializeField] private LayerMask _groundMask;
         [SerializeField] private DashComponent _dashComponent;
+        [SerializeField] private PlayerInput _input;
         [Header("Settings")]
         [SerializeField] private float _speed;
         [SerializeField] private float _turnSmoothTime = 0.1f;
         [SerializeField] private float _drag = 2f;
+        [SerializeField] private string _playerName;
 
         private float _turnSmoothVelocity;
         private Vector2 _moveDirection;
@@ -24,6 +28,8 @@ namespace Character
 
         private const float MaxSlopeAngle = 45f;
         private RaycastHit _slopeHit;
+        private Transform _camera;
+        private CinemachineFreeLook _cinemachine;
 
         public Vector2 MoveDirection
         {
@@ -34,6 +40,18 @@ namespace Character
         {
             get => _speed;
             set => _speed = value;
+        }
+
+        public string PlayerName => _playerName;
+
+        public override void OnStartLocalPlayer()
+        {
+            if (!isOwned) return;
+            _camera = Camera.main.transform;
+            _cinemachine = FindObjectOfType<CinemachineFreeLook>();
+            _cinemachine.LookAt = gameObject.transform;
+            _cinemachine.Follow = gameObject.transform;
+            _input.enabled = true;
         }
 
         private void Start()
