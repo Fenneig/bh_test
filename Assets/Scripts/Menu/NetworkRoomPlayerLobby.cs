@@ -13,10 +13,11 @@ namespace Menu
         [SerializeField] private TMP_Text[] _playerReadyTexts = new TMP_Text[4];
         [SerializeField] private Button _startGameButton;
 
-        [SyncVar(hook = nameof(HandleDisplayNameChanged))] private string _displayName = "Loading...";
+        [SyncVar(hook = nameof(HandleDisplayNameChanged))] private string _displayName;
         [SyncVar(hook = nameof(HandleReadyStatusChanged))] private bool _isReady;
         
         private bool _isServer;
+        private NetworkManagerLobby _room;
 
         public string DisplayName => _displayName;
         public bool IsReady => _isReady;
@@ -29,9 +30,7 @@ namespace Menu
             }
         }
 
-        private NetworkManagerLobby _room;
-
-        public NetworkManagerLobby Room
+        private NetworkManagerLobby Room
         {
             get
             {
@@ -42,7 +41,7 @@ namespace Menu
 
         public override void OnStartAuthority()
         {
-            CommandSetDisplayName(PlayerNameInput.DisplayName);
+            CmdSetDisplayName(PlayerNameInput.DisplayName);
 
             _lobbyUI.SetActive(true);
         }
@@ -70,15 +69,13 @@ namespace Menu
             {
                 foreach (var player in Room.RoomPlayers)
                 {
-                    gameObject.SetActive(false);
-                    if (player.isLocalPlayer)
-                    {
-                        gameObject.SetActive(true);
-                        player.UpdateDisplay();
-                    }
+                    if (!player.isLocalPlayer) continue;
+                    player.UpdateDisplay();
+                    break;
                 }
+                return;
             }
-
+            
             for (int i = 0; i < _playerNameTexts.Length; i++)
             {
                 _playerNameTexts[i].text = "Waiting for player...";
@@ -92,6 +89,7 @@ namespace Menu
                     ? "<color=green>Ready</color>"
                     : "<color=red>Not Ready</color>";
             }
+            
         }
 
         public void HandleReadyToStart(bool readyToStart)
@@ -102,13 +100,13 @@ namespace Menu
         }
 
         [Command]
-        private void CommandSetDisplayName(string displayName)
+        private void CmdSetDisplayName(string displayName)
         {
             _displayName = displayName;
         }
 
         [Command]
-        public void CommandReadyUp()
+        public void CmdReadyUp()
         {
             _isReady = !_isReady;
             
@@ -116,10 +114,9 @@ namespace Menu
         }
 
         [Command]
-        public void CommandStartGame()
+        public void CmdStartGame()
         {
             if (Room.RoomPlayers[0].connectionToClient != connectionToClient) return;
-            
             Room.StartGame();
         }
     }

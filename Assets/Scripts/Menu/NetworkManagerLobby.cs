@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Character;
+using Components;
 using Mirror;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Menu
@@ -12,9 +15,7 @@ namespace Menu
         public static event Action OnClientDisconnected;
 
         private readonly List<NetworkRoomPlayerLobby> _roomPlayers = new List<NetworkRoomPlayerLobby>();
-        private readonly List<NetworkGamePlayerLobby> _gamePlayers = new List<NetworkGamePlayerLobby>();
         public List<NetworkRoomPlayerLobby> RoomPlayers => _roomPlayers;
-        public List<NetworkGamePlayerLobby> GamePlayers => _gamePlayers;
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
@@ -71,30 +72,24 @@ namespace Menu
         public void StartGame()
         {
             if (!RoomScene.Contains(SceneManager.GetActiveScene().name)) return;
-            
+
             ServerChangeScene("InGameScene");
         }
 
-        public override void ServerChangeScene(string newSceneName)
+        public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling)
         {
-            if (RoomScene.Contains(SceneManager.GetActiveScene().name))
-            {
-                for (int i = _roomPlayers.Count-1; i >= 0; i--)
-                {
-                    var conn = _roomPlayers[i].connectionToClient;
-                    var gamePlayerInstance = Instantiate(playerPrefab);
-                    
-                    gamePlayerInstance.GetComponent<NetworkGamePlayerLobby>().DisplayName = _roomPlayers[i].DisplayName;
+            foreach (var player in RoomPlayers)
+                player.gameObject.SetActive(false);
 
-                    NetworkServer.Destroy(conn.identity.gameObject);
-
-                    NetworkServer.ReplacePlayerForConnection(conn, gamePlayerInstance);
-                }
-            }
-
-            base.ServerChangeScene(newSceneName);
+            base.OnClientChangeScene(newSceneName, sceneOperation, customHandling);
         }
-        
-        
+
+        public override GameObject OnRoomServerCreateGamePlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
+        {
+            var player = Instantiate(playerPrefab);
+            player.GetComponent<NameComponent>().PlayerName = roomPlayer.GetComponent<NetworkRoomPlayerLobby>().DisplayName;
+
+            return player;
+        }
     }
 }

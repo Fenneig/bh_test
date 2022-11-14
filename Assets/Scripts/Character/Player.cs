@@ -43,7 +43,7 @@ namespace Character
 
         public override void OnStartLocalPlayer()
         {
-            if (!isOwned) return;
+            if (!isLocalPlayer) return;
             _camera = Camera.main.transform;
             _cinemachine = FindObjectOfType<CinemachineFreeLook>();
             _cinemachine.LookAt = gameObject.transform;

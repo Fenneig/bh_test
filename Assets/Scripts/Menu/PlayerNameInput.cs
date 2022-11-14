@@ -11,7 +11,6 @@ namespace Menu
         [SerializeField] private Button _continueButton;
 
         public static string DisplayName { get; private set; }
-        
 
         public void SetPlayerName(string playerName)
         {

@@ -1,11 +1,10 @@
-using Menu;
 using Mirror;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace Character
+namespace Components
 {
     public class NameComponent : NetworkBehaviour
     {
@@ -18,7 +17,11 @@ namespace Character
         [SyncVar(hook = nameof(OnColorChanged))] [SerializeField]
         private Color _playerColor = Color.white;
 
-        public string PlayerName => _playerName;
+        public string PlayerName
+        {
+            get => _playerName;
+            set => _playerName = value;
+        }
 
         private void OnNameChanged(string oldName, string newName)
         {
@@ -36,11 +39,12 @@ namespace Character
         public override void OnStartLocalPlayer()
         {
             Color color = new Color(Random.Range(0f, 0.5f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-            CommandSetupPlayer(GetComponent<NetworkGamePlayerLobby>().DisplayName, color);
+            string newName = string.IsNullOrEmpty(PlayerName) ? gameObject.name : PlayerName;
+            CmdSetupPlayer(newName, color);
         }
 
         [Command]
-        private void CommandSetupPlayer(string playerName, Color color)
+        private void CmdSetupPlayer(string playerName, Color color)
         {
             _playerName = playerName;
             _playerColor = color;
