@@ -50,7 +50,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7924795845673501584
 Transform:
   m_ObjectHideFlags: 0
@@ -310,6 +310,8 @@ GameObject:
   - component: {fileID: 7493680473633408808}
   - component: {fileID: 6066504492200589654}
   - component: {fileID: 4884743363140990908}
+  - component: {fileID: 4181174857207826034}
+  - component: {fileID: 1005829549916707653}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -418,6 +420,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c68103d8-4727-43f8-8e39-892028f0bb28
     m_ActionName: Player/Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8529118166908508205}
+        m_TargetAssemblyTypeName: Input.InputReader, Assembly-CSharp
+        m_MethodName: OnShowScore
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4f3a3c39-00dd-4ffb-81e3-5d5f2a9bb4ce
+    m_ActionName: Player/ShowScore[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Player
   m_DefaultActionMap: Player
@@ -558,6 +576,39 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4181174857207826034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8529118166908508196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbda2a6afea444c3a018fe020cfae2d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  _renderer: {fileID: 8529118167495349900}
+  _attackZone: {fileID: 3465455755134949391}
+  _invulnerableTime: 3
+--- !u!114 &1005829549916707653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8529118166908508196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46db980e95d02544fadf2e5e7f8f9d88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &8529118167495349899
 GameObject:
   m_ObjectHideFlags: 0

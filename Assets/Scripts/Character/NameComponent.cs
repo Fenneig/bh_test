@@ -1,3 +1,4 @@
+using Menu;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,6 @@ namespace Character
     {
         [SerializeField] private TextMeshPro _playerNameText;
         [SerializeField] private GameObject _floatingName;
-
         [SerializeField] private Renderer _playerMaterialClone;
 
         [SyncVar(hook = nameof(OnNameChanged))] [SerializeField]
@@ -23,6 +23,8 @@ namespace Character
         private void OnNameChanged(string oldName, string newName)
         {
             _playerNameText.text = _playerName;
+            if (!string.IsNullOrEmpty(oldName))
+                ScoreTable.Instance.RenamePlayer(oldName, newName);
         }
 
         private void OnColorChanged(Color oldColor, Color newColor)
@@ -33,16 +35,16 @@ namespace Character
 
         public override void OnStartLocalPlayer()
         {
-            string playerName = "Player" + Random.Range(100, 999);
             Color color = new Color(Random.Range(0f, 0.5f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-            CommandSetupPlayer(playerName, color);
+            CommandSetupPlayer(GetComponent<NetworkGamePlayerLobby>().DisplayName, color);
         }
 
         [Command]
-        public void CommandSetupPlayer(string playerName, Color color)
+        private void CommandSetupPlayer(string playerName, Color color)
         {
             _playerName = playerName;
             _playerColor = color;
+            ScoreTable.Instance.AddPlayerToTable(_playerName);
         }
 
         private void Update()
