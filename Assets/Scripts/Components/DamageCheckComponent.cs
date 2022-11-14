@@ -9,7 +9,14 @@ namespace Components
         {
             NameComponent targetNameComponent = target.GetComponent<NameComponent>();
             if (targetNameComponent != null)
-                Debug.Log($"{gameObject.GetComponentInParent<NameComponent>().PlayerName} hit {targetNameComponent.PlayerName}");
+            {
+                HealthComponent healthComponent = target.GetComponent<HealthComponent>();
+                if (!healthComponent.IsInvulnerable)
+                {
+                    healthComponent.GetHit();
+                    ScoreTable.Instance.AddPoint(gameObject.GetComponentInParent<NameComponent>().PlayerName);
+                }
+            }
         }
     }
 }

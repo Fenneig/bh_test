@@ -1,5 +1,6 @@
 using Character.Movement;
 using Cinemachine;
+using Components;
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -49,6 +50,7 @@ namespace Character
             _cinemachine.LookAt = gameObject.transform;
             _cinemachine.Follow = gameObject.transform;
             _input.enabled = true;
+            ScoreTable.Instance.gameObject.SetActive(true);
         }
 
         private void Start()
