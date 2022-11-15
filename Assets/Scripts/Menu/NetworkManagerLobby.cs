@@ -85,8 +85,11 @@ namespace Menu
 
         public override GameObject OnRoomServerCreateGamePlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
         {
-            var player = Instantiate(playerPrefab);
+            GameObject player = Instantiate(playerPrefab);
             player.GetComponent<NameComponent>().PlayerName = roomPlayer.GetComponent<NetworkRoomPlayerLobby>().DisplayName;
+            Transform startPosition = GetStartPosition();
+            player.transform.position = startPosition.position;
+            player.transform.rotation = startPosition.rotation;
 
             return player;
         }
