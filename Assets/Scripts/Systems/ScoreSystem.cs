@@ -17,10 +17,11 @@ namespace Systems
             _instance = this;
         }
 
-        public void CollectData(bool isThisNewPlayer)
+        public void CollectData(uint id)
         {
-            if (isThisNewPlayer) _players = FindObjectsOfType<Player>();
-
+            _players ??= FindObjectsOfType<Player>();
+            if (_players.Length < id) _players = FindObjectsOfType<Player>();
+            
             _scoreText = "";
             foreach (var player in _players)
                 _scoreText += $"{player.NameComponent.PlayerName} - {player.Score}\n";

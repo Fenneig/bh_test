@@ -5,7 +5,6 @@ using Mirror;
 using Systems;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace Character
 {
@@ -27,13 +26,13 @@ namespace Character
         private float _turnSmoothVelocity;
         private Vector2 _moveDirection;
         private bool _isGrounded;
-        private const float SpeedMultiplier = 5f;
-        private const float RayCastMultiplier = 0.6f;
-
-        private const float MaxSlopeAngle = 45f;
         private RaycastHit _slopeHit;
         private Transform _camera;
         private CinemachineFreeLook _cinemachine;
+        
+        private const float SpeedMultiplier = 5f;
+        private const float RayCastMultiplier = 0.6f;
+        private const float MaxSlopeAngle = 45f;
         
         [SyncVar(hook = nameof(OnScoreChanged))] public int Score;
 
@@ -60,7 +59,7 @@ namespace Character
             _cinemachine.LookAt = gameObject.transform;
             _cinemachine.Follow = gameObject.transform;
             _input.enabled = true;
-            ScoreSystem.Instance.CollectData(true);
+            ScoreSystem.Instance.CollectData(netId);
         }
 
         private void Start()
@@ -136,10 +135,9 @@ namespace Character
 
         public void CloseScore() => _scoreComponent.CloseScore();
 
-        
         public void OnScoreChanged(int oldValue, int newValue)
         {
-            ScoreSystem.Instance.CollectData(false);
+            ScoreSystem.Instance.CollectData(netId);
             WinCheckSystem.Instance.WinCheck(_nameComponent.PlayerName, newValue);
         }
         
