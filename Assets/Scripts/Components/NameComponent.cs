@@ -23,11 +23,15 @@ namespace Components
             set => _playerName = value;
         }
 
+        public Color PlayerColor
+        {
+            get => _playerColor;
+            set => _playerColor = value;
+        }
+
         private void OnNameChanged(string oldName, string newName)
         {
             _playerNameText.text = _playerName;
-            if (!string.IsNullOrEmpty(oldName))
-                ScoreTable.Instance.RenamePlayer(oldName, newName);
         }
 
         private void OnColorChanged(Color oldColor, Color newColor)
@@ -48,14 +52,11 @@ namespace Components
         {
             _playerName = playerName;
             _playerColor = color;
-            ScoreTable.Instance.AddPlayerToTable(_playerName);
         }
 
         private void Update()
         {
-            if (isLocalPlayer)
-                return;
-
+            if (isLocalPlayer) return;
             _floatingName.transform.LookAt(Camera.main.transform);
         }
     }

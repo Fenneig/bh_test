@@ -2,8 +2,10 @@ using Character.Movement;
 using Cinemachine;
 using Components;
 using Mirror;
+using Systems;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Character
 {
@@ -15,6 +17,8 @@ namespace Character
         [SerializeField] private LayerMask _groundMask;
         [SerializeField] private DashComponent _dashComponent;
         [SerializeField] private PlayerInput _input;
+        [SerializeField] private NameComponent _nameComponent;
+        [SerializeField] private ScoreComponent _scoreComponent;
         [Header("Settings")]
         [SerializeField] private float _speed;
         [SerializeField] private float _turnSmoothTime = 0.1f;
@@ -30,6 +34,8 @@ namespace Character
         private RaycastHit _slopeHit;
         private Transform _camera;
         private CinemachineFreeLook _cinemachine;
+        
+        [SyncVar(hook = nameof(OnScoreChanged))] public int Score;
 
         public Vector2 MoveDirection
         {
@@ -41,8 +47,12 @@ namespace Character
             get => _speed;
             set => _speed = value;
         }
+        
+        public PlayerInput Input => _input;
 
-        public override void OnStartLocalPlayer()
+        public NameComponent NameComponent => _nameComponent;
+
+        public override void OnStartClient()
         {
             if (!isLocalPlayer) return;
             _camera = Camera.main.transform;
@@ -50,7 +60,7 @@ namespace Character
             _cinemachine.LookAt = gameObject.transform;
             _cinemachine.Follow = gameObject.transform;
             _input.enabled = true;
-            ScoreTable.Instance.gameObject.SetActive(true);
+            ScoreSystem.Instance.CollectData(true);
         }
 
         private void Start()
@@ -114,14 +124,24 @@ namespace Character
             return angle < MaxSlopeAngle && angle != 0;
         }
 
-        private Vector3 GetSlopeMovement(Vector3 moveDirection)
-        {
-            return Vector3.ProjectOnPlane(moveDirection, _slopeHit.normal).normalized;
-        }
+        private Vector3 GetSlopeMovement(Vector3 moveDirection) => 
+            Vector3.ProjectOnPlane(moveDirection, _slopeHit.normal).normalized;
 
         public void Dash()
         {
             if (_dashComponent != null) _dashComponent.Dash();
         }
+
+        public void ShowScore() => _scoreComponent.ShowScore();
+
+        public void CloseScore() => _scoreComponent.CloseScore();
+
+        
+        public void OnScoreChanged(int oldValue, int newValue)
+        {
+            ScoreSystem.Instance.CollectData(false);
+            WinCheckSystem.Instance.WinCheck(_nameComponent.PlayerName, newValue);
+        }
+        
     }
 }

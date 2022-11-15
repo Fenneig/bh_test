@@ -29,8 +29,8 @@ namespace Input
         {
             if (!isLocalPlayer) return;
 
-            if (context.started)  ScoreTable.Instance.ShowScore();
-            if (context.canceled)  ScoreTable.Instance.CloseScore();
+            if (context.started)  _player.ShowScore();
+            if (context.canceled)  _player.CloseScore();
         }
     }
 }

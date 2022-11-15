@@ -6,28 +6,28 @@ namespace Components
 {
     public class HealthComponent : NetworkBehaviour
     {
-        [SerializeField] private Renderer _renderer;
+        [SerializeField] private NameComponent _nameComponent;
         [SerializeField] private GameObject _attackZone;
-        
         [SerializeField] private float _invulnerableTime = 3f;
 
         private Color _previousColor;
         private bool _isInvulnerable;
         public bool IsInvulnerable => _isInvulnerable;
 
+        
         public void GetHit()
         {
             _attackZone.SetActive(false);
-            _previousColor = _renderer.material.color;
+            _previousColor = _nameComponent.PlayerColor;
             StartCoroutine(EnableInvulnerable());
         }
 
         private IEnumerator EnableInvulnerable()
         {
             _isInvulnerable = true;
-            _renderer.material.color = Color.red;
+            _nameComponent.PlayerColor = Color.red;
             yield return new WaitForSeconds(_invulnerableTime);
-            _renderer.material.color = _previousColor;
+            _nameComponent.PlayerColor = _previousColor;
             _isInvulnerable = false;
         }
     }
