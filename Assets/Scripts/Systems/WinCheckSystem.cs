@@ -48,18 +48,8 @@ namespace Systems
             Cursor.lockState = CursorLockMode.Confined;
 
             var networkManager = FindObjectOfType<NetworkManagerLobby>();
-            /*
-            for (int i = 0; i < _players.Length; i++)
-            {
-                if(_players[i] == null) continue;
-                
-                NetworkServer.ReplacePlayerForConnection(_players[i].connectionToClient,
-                    networkManager.RoomPlayers[i].gameObject, true);
-                
-                NetworkServer.Destroy(_players[i].gameObject);
-                networkManager.RoomPlayers[i].gameObject.SetActive(true);
-            }*/
-            networkManager.ServerChangeScene("InGameScene");
+
+            networkManager.RestartGame();
         }
     }
 }

@@ -75,11 +75,12 @@ namespace Menu
             ServerChangeScene("InGameScene");
         }
 
+        public void RestartGame() =>
+            ServerChangeScene("LobbyScene");
+        
         public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling)
         {
-            foreach (var player in RoomPlayers)
-                player.gameObject.SetActive(false);
-
+            RoomPlayers.Clear();
             base.OnClientChangeScene(newSceneName, sceneOperation, customHandling);
         }
 
@@ -90,6 +91,9 @@ namespace Menu
             Transform startPosition = GetStartPosition();
             player.transform.position = startPosition.position;
             player.transform.rotation = startPosition.rotation;
+
+            NetworkServer.Destroy(conn.identity.gameObject);
+            NetworkServer.ReplacePlayerForConnection(conn, player);
 
             return player;
         }
