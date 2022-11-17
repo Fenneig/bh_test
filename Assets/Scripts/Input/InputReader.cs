@@ -1,5 +1,4 @@
-﻿using System;
-using Character;
+﻿using Character;
 using Character.Movement;
 using Mirror;
 using UnityEngine;
