@@ -9,7 +9,7 @@ namespace Character.Movement
         [Header("References")] 
         [SerializeField] private Transform _orientation;
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private Player _player;
+        [SerializeField] private MovementComponent _playerMovement;
         [SerializeField] private GameObject _attack;
 
         [Header("Dashing")]
@@ -26,7 +26,7 @@ namespace Character.Movement
 
         private void Start()
         {
-            _speed = _player.Speed;
+            _speed = _playerMovement.Speed;
         }
 
         private void Update()
@@ -39,7 +39,7 @@ namespace Character.Movement
             if (_dashCooldownTimer > 0) return;
             _attack.SetActive(true);
             _dashCooldownTimer = _dashCooldown;
-            _player.Speed = _maxDashSpeed;
+            _playerMovement.Speed = _maxDashSpeed;
             Vector3 direction = _orientation.forward.normalized;
             _forceToApply = direction * _dashForce + _orientation.up * _dashUpwardForce;
             _rigidbody.useGravity = false;
@@ -54,7 +54,7 @@ namespace Character.Movement
             yield return new WaitForSeconds(_dashDuration);
             
             _attack.SetActive(false);
-            _player.Speed = _speed;
+            _playerMovement.Speed = _speed;
             _rigidbody.useGravity = true;
         }
     }

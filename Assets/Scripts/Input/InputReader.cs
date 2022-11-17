@@ -1,4 +1,6 @@
-﻿using Character;
+﻿using System;
+using Character;
+using Character.Movement;
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,6 +10,12 @@ namespace Input
     public class InputReader : NetworkBehaviour
     {
         [SerializeField] private Player _player;
+        private DashComponent _playerDashComponent;
+
+        private void Start()
+        {
+            _playerDashComponent = _player.GetComponent<DashComponent>();
+        }
 
         [Client]
         public void OnMovement(InputAction.CallbackContext context)
@@ -20,7 +28,8 @@ namespace Input
         public void OnDash(InputAction.CallbackContext context)
         {
             if (!isLocalPlayer) return;
-            _player.Dash();
+            if (_playerDashComponent != null && context.started)
+                _playerDashComponent.Dash();
         }
 
         [Client]
