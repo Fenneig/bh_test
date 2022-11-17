@@ -1,4 +1,5 @@
-﻿using Character;
+﻿using System;
+using Character;
 using Components;
 using Mirror;
 
@@ -16,6 +17,7 @@ namespace Systems
         private void Awake()
         {
             _instance = this;
+            _players = Array.Empty<Player>();
         }
 
         [Command(requiresAuthority = false)]
