@@ -11,16 +11,26 @@ namespace Systems
 
         private string _scoreText;
         private Player[] _players;
+        private bool _isPlayersListFull;
 
         private void Awake()
         {
             _instance = this;
         }
 
-        public void CollectData(uint id)
+        [Command(requiresAuthority = false)]
+        public void CmdCollectData() => CollectData();
+        
+
+        [ClientRpc]
+        private void CollectData()
         {
-            _players ??= FindObjectsOfType<Player>();
-            if (_players.Length < id) _players = FindObjectsOfType<Player>();
+            if (!_isPlayersListFull)
+            {
+                var playersNow = _players?.Length ?? 0;
+                _players = FindObjectsOfType<Player>();
+                _isPlayersListFull = playersNow == _players.Length;
+            }
             
             _scoreText = "";
             foreach (var player in _players)

@@ -39,7 +39,7 @@ namespace Character
             _cinemachine.LookAt = gameObject.transform;
             _cinemachine.Follow = gameObject.transform;
             _input.enabled = true;
-            ScoreSystem.Instance.CollectData(netId);
+            ScoreSystem.Instance.CmdCollectData();
         }
 
         private void Start()
@@ -53,7 +53,7 @@ namespace Character
 
         public void OnScoreChanged(int oldValue, int newValue)
         {
-            ScoreSystem.Instance.CollectData(netId);
+            ScoreSystem.Instance.CmdCollectData();
             WinCheckSystem.Instance.WinCheck(_nameComponent.PlayerName, newValue);
         }
         
