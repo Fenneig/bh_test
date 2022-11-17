@@ -47,6 +47,9 @@ namespace Systems
 
             Cursor.lockState = CursorLockMode.Confined;
 
+            foreach (var player in _players)
+                if (player != null) NetworkServer.Destroy(player.gameObject);
+
             var networkManager = FindObjectOfType<NetworkManagerLobby>();
 
             networkManager.RestartGame();
