@@ -1677,6 +1677,12 @@ MonoBehaviour:
   _winCanvas: {fileID: 1574719764}
   _winText: {fileID: 1169127478}
   _timeToRestart: 5
+  _spawns:
+  - {fileID: 1144739823}
+  - {fileID: 2123575510}
+  - {fileID: 134246597}
+  - {fileID: 349875880}
+  - {fileID: 159806084}
 --- !u!4 &1240009981
 Transform:
   m_ObjectHideFlags: 0

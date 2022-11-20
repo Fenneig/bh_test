@@ -74,9 +74,6 @@ namespace Menu
 
             ServerChangeScene("InGameScene");
         }
-
-        public void RestartGame() =>
-            ServerChangeScene("LobbyScene");
         
         public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling)
         {

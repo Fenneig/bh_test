@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Character;
-using Menu;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +12,7 @@ namespace Systems
         [SerializeField] private GameObject _winCanvas;
         [SerializeField] private Text _winText;
         [SerializeField] private int _timeToRestart;
+        [SerializeField] private Transform[] _spawns;
         
         private static WinCheckSystem _instance;
         public static WinCheckSystem Instance => _instance;
@@ -30,7 +30,7 @@ namespace Systems
             ShowWinMessage(playerName);
             _players ??= FindObjectsOfType<Player>();
             foreach (var player in _players)
-                player.Input.enabled = false;
+                player.SwitchInputActivation();
             StartCoroutine(RestartGame());
         }
         
@@ -43,16 +43,23 @@ namespace Systems
         private IEnumerator RestartGame()
         {
             yield return new WaitForSeconds(_timeToRestart);
+
             _winCanvas.SetActive(false);
+            
+            ResetScene();
+        }
 
-            Cursor.lockState = CursorLockMode.Confined;
-
+        private void ResetScene()
+        {
             foreach (var player in _players)
-                if (player != null) NetworkServer.Destroy(player.gameObject);
+            {
+                player.transform.position = _spawns[Random.Range(0, _spawns.Length)].position;
+                player.transform.rotation = _spawns[Random.Range(0, _spawns.Length)].rotation;
 
-            var networkManager = FindObjectOfType<NetworkManagerLobby>();
-
-            networkManager.RestartGame();
+                player.Score = 0;
+                
+                player.SwitchInputActivation();
+            }
         }
     }
 }
