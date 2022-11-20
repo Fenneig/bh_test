@@ -46,15 +46,18 @@ namespace Character
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-
-        public void ShowScore() => _scoreComponent.ShowScore();
-
-        public void CloseScore() => _scoreComponent.CloseScore();
-
         public void OnScoreChanged(int oldValue, int newValue)
         {
             ScoreSystem.Instance.CmdCollectData();
             WinCheckSystem.Instance.WinCheck(_nameComponent.PlayerName, newValue);
+        }
+
+        public void SwitchInputActivation()
+        {
+            if (!isLocalPlayer) return;
+            
+            if (_input.inputIsActive) _input.DeactivateInput();
+            else _input.ActivateInput();
         }
         
     }

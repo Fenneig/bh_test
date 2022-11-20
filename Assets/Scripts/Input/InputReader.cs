@@ -30,14 +30,5 @@ namespace Input
             if (_playerDashComponent != null && context.started)
                 _playerDashComponent.Dash();
         }
-
-        [Client]
-        public void OnShowScore(InputAction.CallbackContext context)
-        {
-            if (!isLocalPlayer) return;
-
-            if (context.started)  _player.ShowScore();
-            if (context.canceled)  _player.CloseScore();
-        }
     }
 }
